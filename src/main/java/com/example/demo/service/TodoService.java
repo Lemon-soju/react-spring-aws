@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -32,5 +34,25 @@ public class TodoService {
             log.warn("Unknown user.");
             throw new RuntimeException("Known user.");
         }
+    }
+
+    public TodoEntity update(final TodoEntity entity){
+        validate(entity);
+
+        final Optional<TodoEntity> original = repository.findById(entity.getId());
+
+        if(original.isPresent()){
+            final TodoEntity todo = original.get();
+            todo.setTitle(entity.getTitle());
+            todo.setDone(entity.isDone());
+
+            repository.save(todo);
+        };
+
+        return retrieve(entity.getUserId());
+    }
+
+    public TodoEntity retrieve(final String userId){
+        return repository.findByUserId(userId);
     }
 }
