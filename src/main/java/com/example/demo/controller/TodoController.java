@@ -17,7 +17,7 @@ public class TodoController {
 
     private final TodoService service;
 
-    @PostMapping("/test")
+    @PostMapping
     public ResponseEntity<?> createTodo(@RequestBody TodoDTO dto){
         try{
             String temporaryUserId = "temporary-user";
@@ -46,5 +46,19 @@ public class TodoController {
 
             return ResponseEntity.badRequest().body(responseDTO);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> retrieveTodoList(){
+        String temporaryUserId = "temporary-user";
+
+        TodoEntity entity = service.retrieve(temporaryUserId);
+        TodoDTO dto = new TodoDTO();
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setDone(entity.isDone());
+
+        return ResponseEntity.ok().body(dto);
+
     }
 }
