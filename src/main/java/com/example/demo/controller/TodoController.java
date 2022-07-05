@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -60,5 +62,20 @@ public class TodoController {
 
         return ResponseEntity.ok().body(dto);
 
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateTodo(@RequestBody TodoDTO dto){
+        String temporaryUserId = "temporary-user";
+
+        TodoEntity tmpEntity = TodoDTO.toEntity(dto);
+        tmpEntity.setUserId(temporaryUserId);
+        TodoEntity entity = service.update(tmpEntity);
+        TodoDTO todoDto = new TodoDTO();
+        todoDto.setId(entity.getId());
+        todoDto.setTitle(entity.getTitle());
+        todoDto.setDone(entity.isDone());
+
+        return ResponseEntity.ok().body(todoDto);
     }
 }
