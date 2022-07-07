@@ -2,7 +2,8 @@
 import './App.css';
 import Todo from './Todo';
 import React from 'react';
-import { Paper, List } from "@material-ui/core";
+import { Paper, List, Container } from "@material-ui/core";
+import AddTodo from "./AddTodo.js";
 
 class App extends React.Component {
   constructor(props){
@@ -14,6 +15,16 @@ class App extends React.Component {
       ]
     };
   }
+
+  add = (item) => {
+    const thisItems = this.state.items;
+    item.id = "ID-" + thisItems.length;
+    item.done = false;
+    thisItems.push(item);
+    this.setState({ items: thisItems});
+    console.log("items : ", this.state.items);
+  }
+
   render() {
     var todoItems = this.state.items.length > 0 && (
       <Paper style={{ margin: 16 }}>
@@ -28,7 +39,10 @@ class App extends React.Component {
 
       return (  
         <div className="App">
-          {todoItems} 
+          <Container maxWidth="md">
+            <AddTodo add={this.add} />
+            <div className='TodoList'>{todoItems} </div>
+          </Container>
         </div>
       );
   }
