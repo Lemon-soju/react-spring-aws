@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -17,7 +18,7 @@ public class TodoService {
     private final TodoRepository repository;
     EntityManager em;
 
-    public TodoEntity create(final TodoEntity entity){
+    public List<TodoEntity> create(final TodoEntity entity){
 
         validate(entity);
         repository.save(entity);
@@ -38,7 +39,7 @@ public class TodoService {
         }
     }
 
-    public TodoEntity update(final TodoEntity entity){
+    public List<TodoEntity> update(final TodoEntity entity){
         validate(entity);
 
         final Optional<TodoEntity> original = repository.findById(entity.getId());
@@ -55,7 +56,7 @@ public class TodoService {
     }
 
 
-    public TodoEntity delete(final TodoEntity entity){
+    public List<TodoEntity> delete(final TodoEntity entity){
         validate(entity);
 
         try{
@@ -72,7 +73,7 @@ public class TodoService {
     }
 
 
-    public TodoEntity retrieve(final String userId){
+    public List<TodoEntity> retrieve(final String userId){
         return repository.findByUserId(userId);
     }
 }
