@@ -15,6 +15,12 @@ public class TodoDTO {
     private String title;
     private boolean done;
 
+    public TodoDTO(final TodoEntity entity) {
+        id = entity.getId();
+        title = entity.getTitle();
+        done = entity.isDone();
+    }
+
     public static TodoEntity toEntity(final TodoDTO dto){
         return TodoEntity.builder()
                 .id(dto.getId())
