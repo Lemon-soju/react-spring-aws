@@ -11,12 +11,13 @@ class App extends React.Component {
     super(props)
     this.state = {
       items: [ ],
+      loading: true,
     };
   }
 
   componentDidMount() {
     call("/todo", "GET", null).then((response) =>
-      this.setState({  items: response.data })
+      this.setState({  items: response.data, loading: false })
       );
   };
 
@@ -72,15 +73,24 @@ class App extends React.Component {
       </AppBar>
     )
 
-      return (  
-        <div className="App">
-          {navigationBar}
-          <Container maxWidth="md">
-            <AddTodo add={this.add} />
-            <div className='TodoList'>{todoItems} </div>
-          </Container>
-        </div>
-      );
+    var todoListPage = (
+      <div>
+        {navigationBar}
+        <Container maxWidth="md">
+          <AddTodo add={this.add} />
+          <div className='TodoList'>{todoItems}</div>
+        </Container>
+      </div>
+    )
+
+    var loadingPage = <h1> 로딩중.. </h1>;
+    var content = loadingPage;
+    
+    if (!this.state.loading){
+      content =  todoListPage;
+    }
+
+      return <div className='App'>{content}</div>;
   }
 }
 
