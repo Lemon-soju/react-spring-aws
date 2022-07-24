@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./app-config";
+import { API_BASE_URL } from "../app-config";
 const ACCESS_TOKEN = "ACCESS_TOKEN";
 
 export function call(api,  method,  request) {
@@ -32,7 +32,7 @@ export function call(api,  method,  request) {
     )
     .catch((error) => {
         console.log(error.status);
-        if(error.status == 403) {
+        if(error.status === 403) {
             window.location.href = "/login";
         }
         return Promise.reject(error);
@@ -52,4 +52,8 @@ export function signin(userDTO) {
 export function signout(){
     localStorage.setItem(ACCESS_TOKEN, null);
     window.location.href = "/login"
+}
+
+export function signup(userDTO){
+    return call("/auth/signup", "POST", userDTO);
 }
